@@ -9,6 +9,7 @@ export default function Footer() {
         <div className="foot-brand">
           <div className="foot-brand-name">AMIGO'S</div>
           <p>Artisan bakery &amp; caf&eacute; in Trincomalee, Sri Lanka. Slow bread, honest coffee.</p>
+                    <Link to="/admin" className="footer-admin-link">Admin Login</Link>
         </div>
         <div className="foot-links">
           <h5>Explore</h5>
@@ -20,6 +21,7 @@ export default function Footer() {
           <h5>Follow</h5>
           <a href={SHOP.instagramUrl}>Instagram</a>
           <a href={`https://wa.me/${SHOP.phone}`}>WhatsApp</a>
+
         </div>
         <div className="foot-visit">
           <h5>Visit</h5>

@@ -94,6 +94,7 @@ transition:translate .6s cubic-bezier(.3,.8,.2,1),scale .6s,opacity .6s;box-shad
 .foot-grid{max-width:1440px;margin:auto;display:grid;grid-template-columns:minmax(0,1.45fr) repeat(2,minmax(0,.85fr)) minmax(0,1.45fr);gap:clamp(24px,4vw,74px)}
 .foot-brand-name{font-family:var(--cond);font-size:38px;line-height:1;color:#fff;letter-spacing:.01em;margin-bottom:18px}.footer p{font-size:14px;line-height:1.7}.foot-brand p{max-width:360px}.foot-visit p+p{margin-top:2px}
 .footer h5{color:#fff;font-size:15px;margin-bottom:18px}.footer a{display:block;font-size:14px;margin-bottom:12px;color:#b9aea3}.footer a:hover{color:var(--or)}
+.footer a.footer-admin-link{display:inline-flex;align-items:center;justify-content:center;margin-top:8px;padding:10px 16px;border:1px solid #ffffff40;border-radius:99px;color:#fff;font-size:13px;font-weight:600;transition:background .2s,border-color .2s,color .2s}.footer a.footer-admin-link:hover{background:var(--or);border-color:var(--or);color:#fff}
 .foot-wordmark{font-family:var(--cond);font-size:clamp(64px,17vw,300px);font-weight:400;line-height:.78;letter-spacing:-.04em;color:var(--or);text-align:center;white-space:nowrap;margin:clamp(64px,8vw,116px) auto 30px}
 .copy{max-width:none;margin:0 auto;padding:0;border:0;font-size:12px!important;color:#8d8278;text-align:center}
 
