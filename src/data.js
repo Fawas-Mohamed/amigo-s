@@ -64,6 +64,10 @@ export const INSTA = [
   { tag: "Fresh bakes", image: U("photo-1555507036-ab1f4038808a", 700) },
   { tag: "Cold brew", image: U("photo-1517701604599-bb29b565090c", 700) },
   { tag: "The beans", image: U("photo-1447933601403-0c6688de566e", 700) },
+  { tag: "Espresso being pulled", image: U("photo-1510707577719-ae7c14805e3a", 700) },
+  { tag: "Cappuccino with silky foam", image: U("photo-1572442388796-11668a67e53d", 700) },
+  { tag: "Matcha latte", image: U("photo-1536256263959-770b48d82b0a", 700) },
+  { tag: "Fresh coffee", image: U("photo-1497935586351-b67a49e012bf", 700) },
 ];
 
 // About page copy: placeholder text, replace with the owner's real story.

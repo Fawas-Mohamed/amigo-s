@@ -4,16 +4,14 @@ import { useShop } from "../store.js";
 
 export default function Instagram() {
   const SHOP = useShop().settings;
-  const [i, setI] = useState(2);
-  const [hover, setHover] = useState(false);
+  const [i, setI] = useState(Math.floor(INSTA.length / 2));
   const touchStart = useRef(null);
   const swiped = useRef(false);
 
   useEffect(() => {
-    if (hover) return undefined;
     const timer = setInterval(() => setI((value) => (value + 1) % INSTA.length), 3500);
     return () => clearInterval(timer);
-  }, [hover]);
+  }, []);
 
   const onTouchStart = (event) => {
     touchStart.current = event.touches[0]?.clientX ?? null;
@@ -37,13 +35,13 @@ export default function Instagram() {
   };
 
   return (
-    <section className="sec insta" id="instagram" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
-      <div className="insta-tabs" role="group" aria-label="Gallery images">
-        {INSTA.map((p, k) => <button key={p.tag} type="button" className={"chip" + (k === i ? " on" : "")} aria-pressed={k === i} onClick={() => setI(k)}>{p.tag}</button>)}
-      </div>
+    <section className="sec insta" id="instagram">
       <div className="deck" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
         {INSTA.map((p, k) => {
-          const d = k - i;
+          let d = k - i;
+          if (d > INSTA.length / 2) d -= INSTA.length;
+          if (d < -INSTA.length / 2) d += INSTA.length;
+          if (Math.abs(d) > 2) return null;
           return <img key={k} src={p.image} alt={p.tag} loading="lazy"
             onClick={() => chooseCard(k)}
             onKeyDown={(event) => {
