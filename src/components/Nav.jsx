@@ -67,6 +67,7 @@ export default function Nav() {
       </button>
       {open && (
         <div id="mobile-navigation" className="nav-mobile" ref={panelRef}>
+          <Link to="/" onClick={closeOnNavigate}>Home</Link>
           <Link to="/menu" onClick={closeOnNavigate}>Menu</Link>
           <Link to="/about" onClick={closeOnNavigate}>About</Link>
           <Link to="/#story" onClick={closeOnNavigate}>Our ritual</Link>
