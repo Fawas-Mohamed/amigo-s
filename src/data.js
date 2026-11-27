@@ -6,13 +6,13 @@ export const SHOP = {
   phone: "94770000000",
   phoneLabel: "+94 77 000 0000",
   address: "Main Street, Trincomalee, Sri Lanka",
-  hours: "Open daily 7am – 10pm",
+  hours: "Open daily 11am – 11pm",
   instagram: "amigos_trinco",
   instagramUrl: "https://www.instagram.com/amigos_trinco/",
 };
 
 export const HERO = {
-  image: U("photo-1554118811-1e0d58224f24", 1600),
+  image: "/images/hero/Amigo’s Café Storefront Experience.png",
   card: { image: U("photo-1461023058943-07fcbe16d735", 600), title: "Signature Latte", meta: "Hot or iced · Bestseller", price: "LKR 700" },
   text: "Freshly roasted coffee, slow-brewed drinks and warm bakes in the heart of Trincomalee, made for sharing with friends.",
 };

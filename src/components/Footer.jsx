@@ -6,14 +6,29 @@ export default function Footer() {
   return (
     <footer className="footer" id="contact">
       <div className="foot-grid">
-        <div><div className="nav-logo big">Amigo’s</div><p>{SHOP.address}</p><p>{SHOP.hours}</p></div>
-        <div><h5>Explore</h5><Link to="/menu">Menu</Link><Link to="/about">About us</Link><Link to="/#story">Our ritual</Link><Link to="/admin">Admin login</Link></div>
-        <div><h5>Contact</h5><a href={`https://wa.me/${SHOP.phone}`}>{SHOP.phoneLabel}</a><a href={SHOP.instagramUrl}>Instagram</a></div>
-        <form className="foot-news" onSubmit={(e) => { e.preventDefault(); e.target.reset(); }}>
-          <h5>Exclusive updates</h5><input type="email" required placeholder="Your email" aria-label="Email" /><button className="pill orange">Subscribe</button>
-        </form>
+        <div className="foot-brand">
+          <div className="foot-brand-name">AMIGO'S</div>
+          <p>Artisan bakery &amp; caf&eacute; in Trincomalee, Sri Lanka. Slow bread, honest coffee.</p>
+        </div>
+        <div className="foot-links">
+          <h5>Explore</h5>
+          <Link to="/menu">Menu</Link>
+          <Link to="/about">Our Story</Link>
+          <Link to="/menu#products">Shop</Link>
+        </div>
+        <div className="foot-links">
+          <h5>Follow</h5>
+          <a href={SHOP.instagramUrl}>Instagram</a>
+          <a href={`https://wa.me/${SHOP.phone}`}>WhatsApp</a>
+        </div>
+        <div className="foot-visit">
+          <h5>Visit</h5>
+          <p>{SHOP.address}</p>
+          <p>{SHOP.hours}</p>
+        </div>
       </div>
-      <p className="copy">© {new Date().getFullYear()} {SHOP.name} All rights reserved.</p>
+      <div className="foot-wordmark" aria-hidden="true">AMIGO'S</div>
+      <p className="copy">&copy; {new Date().getFullYear()} {SHOP.name}. All rights reserved.</p>
     </footer>
   );
 }

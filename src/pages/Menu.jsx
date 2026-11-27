@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { useShop, money } from "../store.js";
 import Nav from "../components/Nav.jsx";
 import Footer from "../components/Footer.jsx";
@@ -11,6 +11,55 @@ export default function Menu() {
   const [q, setQ] = useState("");
   const [cart, setCart] = useState({});
   const [open, setOpen] = useState(false);
+  const location = useLocation();
+  const openerRef = useRef(null);
+  const closeRef = useRef(null);
+  const drawerRef = useRef(null);
+
+  const closeDrawer = () => {
+    setOpen(false);
+    window.requestAnimationFrame(() => openerRef.current?.focus());
+  };
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    closeRef.current?.focus();
+
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setOpen(false);
+        window.requestAnimationFrame(() => openerRef.current?.focus());
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const focusable = [...drawerRef.current.querySelectorAll("button:not([disabled]), a[href], input, select, textarea, [tabindex]:not([tabindex='-1'])")];
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (!drawerRef.current.contains(document.activeElement)) {
+        event.preventDefault();
+        first.focus();
+      } else if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
+
+  useEffect(() => {
+    setOpen(false);
+  }, [location.pathname, location.search, location.hash]);
   const cur = settings.currency;
 
   const live = products.filter((p) => p.status === "active");
@@ -68,12 +117,12 @@ export default function Menu() {
         <svg width="0" height="0" aria-hidden="true"><defs><clipPath id="wave" clipPathUnits="objectBoundingBox"><path d="M0,0.12 C0.12,0 0.22,0.08 0.34,0.05 C0.5,0.01 0.62,0.1 0.76,0.05 C0.88,0.01 0.95,0.03 1,0.09 L1,1 L0,1 Z" /></clipPath></defs></svg>
       </main>
 
-      {count > 0 && !open && <button className="order-fab" onClick={() => setOpen(true)}>Your order · {count} {count === 1 ? "item" : "items"} · {money(total, cur)}</button>}
+      {count > 0 && !open && <button ref={openerRef} className="order-fab" onClick={() => setOpen(true)}>Your order · {count} {count === 1 ? "item" : "items"} · {money(total, cur)}</button>}
       {open && (
         <>
-          <div className="shade" onClick={() => setOpen(false)} />
-          <aside className="drawer" aria-label="Your order">
-            <div className="drawer-h"><h3 className="serif">Your order</h3><button className="plus" onClick={() => setOpen(false)} aria-label="Close order">×</button></div>
+          <button type="button" className="shade" aria-label="Close order dialog" onClick={closeDrawer} />
+          <aside ref={drawerRef} className="drawer" role="dialog" aria-modal="true" aria-label="Your order">
+            <div className="drawer-h"><h3 className="serif">Your order</h3><button type="button" ref={closeRef} className="plus" onClick={closeDrawer} aria-label="Close order">×</button></div>
             <div className="drawer-body">
               {lines.length === 0 && <p className="menu-empty">Your order is empty.</p>}
               {lines.map((p) => (

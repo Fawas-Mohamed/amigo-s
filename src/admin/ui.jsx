@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export const toast = (msg) => window.dispatchEvent(new CustomEvent("ad-toast", { detail: msg }));
 export function Toaster() {
@@ -13,15 +13,52 @@ export function Toaster() {
 }
 
 export function Modal({ title, onClose, children, wide }) {
+  const dialogRef = useRef(null);
+  const closeRef = useRef(null);
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
+
   useEffect(() => {
-    const k = (e) => e.key === "Escape" && onClose();
-    window.addEventListener("keydown", k);
-    return () => window.removeEventListener("keydown", k);
-  }, [onClose]);
+    const opener = document.activeElement;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const focusFrame = window.requestAnimationFrame(() => closeRef.current?.focus());
+
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        onCloseRef.current();
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const focusable = [...dialogRef.current.querySelectorAll("button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex='-1'])")];
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (!dialogRef.current.contains(document.activeElement)) {
+        event.preventDefault();
+        first.focus();
+      } else if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.cancelAnimationFrame(focusFrame);
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", onKeyDown);
+      if (opener?.isConnected) opener.focus();
+    };
+  }, []);
+
   return (
-    <div className="ad-back" onMouseDown={onClose}>
-      <div className={"ad-modal" + (wide ? " wide" : "")} role="dialog" aria-modal="true" aria-label={title} onMouseDown={(e) => e.stopPropagation()}>
-        <div className="ad-modal-h"><h3>{title}</h3><button className="ad-x" onClick={onClose} aria-label="Close">×</button></div>
+    <div className="ad-back" onClick={onClose}>
+      <div ref={dialogRef} className={"ad-modal" + (wide ? " wide" : "")} role="dialog" aria-modal="true" aria-labelledby="ad-dialog-title" onClick={(event) => event.stopPropagation()}>
+        <div className="ad-modal-h"><h3 id="ad-dialog-title">{title}</h3><button ref={closeRef} type="button" className="ad-x" onClick={onClose} aria-label="Close">&#215;</button></div>
         {children}
       </div>
     </div>
